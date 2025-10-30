@@ -23,7 +23,7 @@ Application desktop légère combinant **Tauri**, **SvelteKit** et **Rust** pour
 
 Téléchargez la dernière version depuis les [Releases](https://github.com/AnthonyMahe/macgyver/releases) :
 
-- **Windows** : `macgyver_x.x.x_x64_en-US.msi`
+- **Windows** : `macgyver_x.x.x_x64_fr-FR.msi`
 - **Linux** : `macgyver_x.x.x_amd64.AppImage`
 
 ### Installation rapide
