@@ -1,0 +1,53 @@
+{
+  "name": "macgyver",
+  "private": true,
+  "version": "1.0.0",
+  "description": "MacGyver - Suite d'outils de productivité avec Pomodoro, Notes et TodoList",
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "build:prod": "set NODE_ENV=production && vite build",
+    "preview": "vite preview",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "tauri": "tauri",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build",
+    "tauri:build:prod": "cross-env NODE_ENV=production tauri build --config src-tauri/tauri.conf.json",
+    "tauri:build:release": "npm run build:prod && tauri build --config src-tauri/tauri.conf.json --target x86_64-pc-windows-msvc",
+    "tauri:build:nsis": "set NODE_ENV=production && tauri build --config src-tauri/tauri.conf.json --bundles nsis",
+    "clean": "rimraf build dist src-tauri/target",
+    "analyze": "npm run build:prod -- --analyze"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-static": "^3.0.0",
+    "@sveltejs/kit": "^2.0.0",
+    "@sveltejs/vite-plugin-svelte": "^3.0.0",
+    "@tauri-apps/cli": "^1.5.0",
+    "svelte": "^4.0.0",
+    "svelte-check": "^3.0.0",
+    "terser": "^5.44.0",
+    "typescript": "^5.0.0",
+    "vite": "^5.0.0"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^1.5.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "macgyver",
+    "productivité",
+    "pomodoro",
+    "notes",
+    "todolist",
+    "tauri",
+    "sveltekit",
+    "rust",
+    "desktop"
+  ],
+  "author": "Développeur",
+  "license": "MIT"
+}

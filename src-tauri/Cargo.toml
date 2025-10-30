@@ -1,0 +1,158 @@
+# Configuration Cargo pour le backend Rust de l'application Tauri
+#
+# Ce fichier définit les métadonnées du projet Rust, les dépendances
+# et les optimisations de compilation pour générer un exécutable performant.
+#
+# Structure :
+# - Métadonnées du package
+# - Dépendances Rust nécessaires
+# - Profils de compilation optimisés
+# - Configuration des fonctionnalités Tauri
+
+[package]
+# === Métadonnées du projet ===
+name = "macgyver"
+version = "1.0.0"
+description = "MacGyver - Suite d'outils de productivité avec Pomodoro, Notes et TodoList"
+authors = ["Développeur"]
+license = "MIT"
+repository = ""
+edition = "2021"  # Utilise l'édition Rust 2021 (la plus récente)
+
+# Empêche la publication accidentelle sur crates.io
+publish = false
+
+# === Configuration du binaire ===
+[[bin]]
+name = "macgyver"
+path = "src/main.rs"
+
+[build-dependencies]
+# Dépendances nécessaires uniquement lors de la compilation
+tauri-build = { version = "1.5", features = [] }
+
+[dependencies]
+# === Dépendances Tauri principales ===
+# Framework Tauri pour créer des applications desktop avec des technologies web
+tauri = { version = "1.5", features = [ 
+  "shell-open",        # Permet d'ouvrir des liens externes
+  "icon-ico",          # Support des icônes .ico pour Windows
+  "icon-png",          # Support des icônes .png
+  "dialog-open",       # Dialogue d'ouverture de fichiers
+  "dialog-save",       # Dialogue de sauvegarde de fichiers
+  "fs-copy-file",      # Copie de fichiers
+  "fs-create-dir",     # Création de répertoires
+  "fs-exists",         # Vérification d'existence de fichiers
+  "fs-read-dir",       # Lecture de répertoires
+  "fs-read-file",      # Lecture de fichiers
+  "fs-remove-dir",     # Suppression de répertoires
+  "fs-remove-file",    # Suppression de fichiers
+  "fs-rename-file",    # Renommage de fichiers
+  "fs-write-file",     # Écriture de fichiers
+  "protocol-asset",    # Protocole pour servir des assets locaux
+] }
+
+# API Tauri pour les macros et utilitaires
+# tauri-plugin-shell = "1.5"  # Plugin pour exécuter des commandes shell (si nécessaire)
+
+# === Dépendances pour la sérialisation ===
+# Serde : bibliothèque de sérialisation/désérialisation Rust
+serde = { version = "^1.0", features = ["derive"] }
+serde_json = "^1.0"  # Support JSON pour les échanges avec le frontend
+
+# === Gestion d'erreurs ===
+# thiserror : macros pour créer des types d'erreurs personnalisés
+thiserror = "^1.0"
+
+# === Utilitaires ===
+# chrono : gestion des dates et heures
+chrono = { version = "^0.4", features = ["serde"] }
+
+# regex : expressions régulières pour validation et formatage
+regex = "^1.0"
+
+# lazy_static : variables statiques initialisées à l'exécution
+lazy_static = "^1.4"
+
+# dirs-next : accès aux répertoires système (documents, données, etc.)
+dirs-next = "^2.0"
+
+# === Logging (optionnel, pour le debugging) ===
+log = "^0.4"         # Interface de logging standard
+env_logger = "^0.11" # Implémentation simple du logging
+
+# === Traitement d'images ===
+image = { version = "^0.24", features = ["jpeg", "png", "webp", "bmp", "tiff", "gif"] }
+tokio = { version = "^1.0", features = ["fs", "rt", "macros"] }
+
+# === Suppression de fond d'images ===
+# Pour l'instant, utilisation d'image-rs pur, évolution possible vers rmbg plus tard
+
+# === Traitement de PDFs ===
+lopdf = "^0.32"  # Bibliothèque principale pour manipuler les PDFs
+
+# === Interface utilisateur et progression ===
+indicatif = "^0.17"  # Barres de progression stylées pour les opérations longues
+
+# === Dépendances de développement ===
+[dev-dependencies]
+# Dépendances utilisées uniquement pour les tests et le développement
+tokio-test = "^0.4"  # Utilitaires pour tester du code asynchrone
+
+# === Profils de compilation ===
+# Ces profils optimisent la compilation pour différents usages
+
+# Profil de développement (utilisé avec `cargo run`)
+[profile.dev]
+# Optimisations minimales pour une compilation rapide
+opt-level = 0        # Pas d'optimisation (compilation plus rapide)
+debug = true         # Inclut les informations de debug
+split-debuginfo = "unpacked"  # Sépare les infos de debug pour un linking plus rapide
+incremental = true   # Compilation incrémentale (plus rapide lors des modifications)
+
+# Profil de release (utilisé avec `cargo build --release`)
+[profile.release]
+# Optimisations maximales pour la taille et les performances
+opt-level = "z"      # Optimise agressivement pour la taille du binaire
+debug = false        # Supprime les informations de debug
+strip = "symbols"    # Supprime tous les symboles de debug du binaire final
+lto = "fat"          # Link Time Optimization complète : optimise entre toutes les crates
+codegen-units = 1    # Une seule unité de génération de code (meilleure optimisation)
+panic = "abort"      # Arrêt immédiat en cas de panic (réduit la taille)
+overflow-checks = false  # Désactive les vérifications de débordement (plus rapide)
+rpath = false        # Désactive rpath pour réduire la taille
+incremental = false  # Désactive la compilation incrémentale en release
+
+# Profil pour les dépendances en mode release
+[profile.release.package."*"]
+opt-level = "z"      # Optimise agressivement les dépendances pour la taille
+debug = false        # Pas de debug pour les dépendances
+strip = "symbols"    # Supprime les symboles des dépendances
+
+# === Configuration des fonctionnalités ===
+[features]
+# Fonctionnalités par défaut activées
+default = ["custom-protocol"]
+
+# Protocole personnalisé pour servir les assets de l'application
+custom-protocol = ["tauri/custom-protocol"]
+
+# === Métadonnées Tauri ===
+[package.metadata.tauri]
+# Configuration spécifique à Tauri (peut être surchargée par tauri.conf.json)
+bundle = true        # Active la génération de bundles
+category = "Utility" # Catégorie de l'application
+short_description = "MacGyver - Outils de productivité"
+long_description = """
+MacGyver - Suite d'outils de productivité complète avec :
+- Timer Pomodoro pour la concentration
+- Prise de notes rapide et organisée  
+- TodoList simple et efficace
+Application desktop moderne avec Tauri, SvelteKit et Rust.
+"""
+
+# === Configuration du workspace (si nécessaire) ===
+# Décommentez si vous avez plusieurs crates dans le projet
+# [workspace]
+# members = ["src-tauri"]
+# resolver = "2"

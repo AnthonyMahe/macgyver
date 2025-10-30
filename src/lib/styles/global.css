@@ -1,0 +1,708 @@
+/**
+ * Styles CSS globaux pour l'application Tauri + SvelteKit
+ * 
+ * Ce fichier définit les styles de base appliqués à toute l'application.
+ * Philosophie : CSS vanilla, moderne, responsive et maintenable.
+ * 
+ * Organisation :
+ * 1. Variables CSS (couleurs, typographie, espacements)
+ * 2. Reset et normalisation
+ * 3. Styles de base (typographie, liens, formulaires)
+ * 4. Classes utilitaires réutilisables
+ * 5. Responsive design
+ */
+
+/* Optimisations de performance */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  /* Améliore le rendu des polices */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Améliore les performances de scroll */
+  scroll-behavior: smooth;
+  /* Optimisations de performance */
+  text-rendering: optimizeSpeed;
+}
+
+/* Optimise les animations et transitions */
+*,
+*::before,
+*::after {
+  /* Optimise les repaints */
+  will-change: auto;
+}
+
+/* Optimisations pour la production */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ========================================
+   1. VARIABLES CSS GLOBALES
+   ======================================== */
+
+:root {
+  /* === THÈME SOMBRE MODERNE === */
+  
+  /* Couleurs principales - Palette moderne avec accents colorés */
+  --couleur-principale: #6366f1;           /* Indigo moderne */
+  --couleur-principale-claire: #818cf8;    /* Indigo clair (hover) */
+  --couleur-principale-foncee: #4f46e5;    /* Indigo foncé (active) */
+  
+  /* Couleurs secondaires - Tons violets élégants */
+  --couleur-secondaire: #8b5cf6;           /* Violet */
+  --couleur-secondaire-claire: #a78bfa;    /* Violet clair */
+  --couleur-secondaire-foncee: #7c3aed;    /* Violet foncé */
+  
+  /* Couleurs d'accent - Palette moderne */
+  --couleur-accent-cyan: #06b6d4;          /* Cyan moderne */
+  --couleur-accent-emerald: #10b981;       /* Émeraude */
+  --couleur-accent-amber: #f59e0b;         /* Ambre */
+  --couleur-accent-rose: #ec4899;          /* Rose */
+  
+  /* Couleurs sémantiques - Adaptées au thème sombre */
+  --couleur-succes: #10b981;               /* Vert émeraude */
+  --couleur-succes-claire: #34d399;        /* Vert clair */
+  --couleur-succes-foncee: #059669;        /* Vert foncé */
+  --couleur-erreur: #ef4444;               /* Rouge moderne */
+  --couleur-erreur-claire: #f87171;        /* Rouge clair */
+  --couleur-erreur-foncee: #dc2626;        /* Rouge foncé */
+  --couleur-avertissement: #f59e0b;        /* Ambre */
+  --couleur-avertissement-claire: #fbbf24; /* Ambre clair */
+  --couleur-avertissement-foncee: #d97706; /* Ambre foncé */
+  --couleur-info: #06b6d4;                 /* Cyan */
+  --couleur-info-claire: #22d3ee;          /* Cyan clair */
+  --couleur-info-foncee: #0891b2;          /* Cyan foncé */
+  
+  /* Couleurs neutres - Thème sombre élégant */
+  --couleur-texte-principal: #f8fafc;      /* Blanc cassé pour le texte principal */
+  --couleur-texte-secondaire: #cbd5e1;     /* Gris clair pour le texte secondaire */
+  --couleur-texte-tertiaire: #94a3b8;      /* Gris moyen pour le texte tertiaire */
+  --couleur-texte-desactive: #64748b;      /* Gris foncé pour le texte désactivé */
+  
+  /* Fonds - Dégradé de gris sombres */
+  --couleur-fond-principal: #0f172a;       /* Bleu très foncé (fond principal) */
+  --couleur-fond-secondaire: #1e293b;      /* Bleu foncé (cartes, sections) */
+  --couleur-fond-tertiaire: #334155;       /* Gris-bleu (éléments interactifs) */
+  --couleur-fond-quaternaire: #475569;     /* Gris moyen (hover states) */
+  
+  /* Bordures - Subtiles dans le thème sombre */
+  --couleur-bordure: #334155;              /* Bordure principale */
+  --couleur-bordure-claire: #475569;       /* Bordure claire (hover) */
+  --couleur-bordure-focus: var(--couleur-principale); /* Bordure focus */
+  
+  /* Overlay et surfaces */
+  --couleur-overlay: rgba(15, 23, 42, 0.8); /* Overlay sombre */
+  --couleur-surface-glass: rgba(30, 41, 59, 0.8); /* Effet verre */
+  
+  /* === Typographie === */
+  /* Familles de polices (utilise les polices système pour de meilleures performances) */
+  --police-principale: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
+                       'Helvetica Neue', Arial, sans-serif;
+  --police-monospace: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 
+                      'Consolas', 'Courier New', monospace;
+  
+  /* Tailles de police */
+  --taille-police-xs: 0.75rem;    /* 12px - Très petit texte */
+  --taille-police-sm: 0.875rem;   /* 14px - Petit texte */
+  --taille-police-base: 1rem;     /* 16px - Texte normal */
+  --taille-police-lg: 1.125rem;   /* 18px - Texte large */
+  --taille-police-xl: 1.25rem;    /* 20px - Titre secondaire */
+  --taille-police-2xl: 1.5rem;    /* 24px - Titre principal */
+  --taille-police-3xl: 1.875rem;  /* 30px - Grand titre */
+  
+  /* Hauteurs de ligne */
+  --hauteur-ligne-serree: 1.25;   /* Texte compact */
+  --hauteur-ligne-normale: 1.5;   /* Texte normal */
+  --hauteur-ligne-relachee: 1.75; /* Texte aéré */
+  
+  /* === Espacements === */
+  /* Système d'espacement basé sur 0.25rem (4px) */
+  --espacement-xs: 0.25rem;   /* 4px */
+  --espacement-sm: 0.5rem;    /* 8px */
+  --espacement-md: 1rem;      /* 16px */
+  --espacement-lg: 1.5rem;    /* 24px */
+  --espacement-xl: 2rem;      /* 32px */
+  --espacement-2xl: 3rem;     /* 48px */
+  --espacement-3xl: 4rem;     /* 64px */
+  
+  /* === Bordures et rayons === */
+  --rayon-bordure-sm: 0.25rem;    /* 4px - Petit rayon */
+  --rayon-bordure-md: 0.5rem;     /* 8px - Rayon normal */
+  --rayon-bordure-lg: 0.75rem;    /* 12px - Grand rayon */
+  --rayon-bordure-xl: 1rem;       /* 16px - Très grand rayon */
+  --rayon-bordure-rond: 50%;      /* Cercle parfait */
+  
+  --epaisseur-bordure: 1px;       /* Épaisseur standard */
+  --epaisseur-bordure-epaisse: 2px; /* Bordure épaisse */
+  
+  /* === Ombres - Adaptées au thème sombre === */
+  --ombre-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --ombre-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  --ombre-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --ombre-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
+  
+  /* Ombres colorées pour les éléments interactifs */
+  --ombre-principale: 0 4px 14px 0 rgba(99, 102, 241, 0.2);
+  --ombre-succes: 0 4px 14px 0 rgba(16, 185, 129, 0.2);
+  --ombre-erreur: 0 4px 14px 0 rgba(239, 68, 68, 0.2);
+  --ombre-avertissement: 0 4px 14px 0 rgba(245, 158, 11, 0.2);
+  
+  /* === Transitions === */
+  --transition-rapide: 150ms ease-in-out;
+  --transition-normale: 300ms ease-in-out;
+  --transition-lente: 500ms ease-in-out;
+  
+  /* === Z-index === */
+  --z-dropdown: 1000;
+  --z-modal: 1050;
+  --z-tooltip: 1100;
+  --z-notification: 1150;
+}
+
+/* ========================================
+   2. RESET ET NORMALISATION
+   ======================================== */
+
+/* Reset moderne inspiré de Normalize.css */
+*,
+*::before,
+*::after {
+  box-sizing: border-box; /* Inclut padding et border dans la largeur */
+}
+
+/* Supprime les marges par défaut */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* Configuration de base du document */
+html {
+  font-size: 16px; /* Taille de base pour les rem */
+  line-height: var(--hauteur-ligne-normale);
+  -webkit-text-size-adjust: 100%; /* Évite le zoom automatique sur iOS */
+  -webkit-font-smoothing: antialiased; /* Améliore le rendu des polices sur macOS */
+  -moz-osx-font-smoothing: grayscale; /* Améliore le rendu des polices sur macOS */
+}
+
+/* Configuration de base du body */
+body {
+  font-family: var(--police-principale);
+  font-size: var(--taille-police-base);
+  color: var(--couleur-texte-principal);
+  background: var(--couleur-fond-principal);
+  /* Ajout d'un dégradé subtil pour plus de profondeur */
+  background-image: 
+    radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.03) 0%, transparent 50%);
+  line-height: var(--hauteur-ligne-normale);
+  min-height: 100vh;
+}
+
+/* ========================================
+   3. STYLES DE BASE
+   ======================================== */
+
+/* === Titres === */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: var(--hauteur-ligne-serree);
+  color: var(--couleur-texte-principal);
+  margin-bottom: var(--espacement-md);
+}
+
+h1 { font-size: var(--taille-police-3xl); }
+h2 { font-size: var(--taille-police-2xl); }
+h3 { font-size: var(--taille-police-xl); }
+h4 { font-size: var(--taille-police-lg); }
+h5 { font-size: var(--taille-police-base); }
+h6 { font-size: var(--taille-police-sm); }
+
+/* === Paragraphes === */
+p {
+  margin-bottom: var(--espacement-md);
+  line-height: var(--hauteur-ligne-normale);
+}
+
+/* === Liens === */
+a {
+  color: var(--couleur-principale);
+  text-decoration: none;
+  transition: color var(--transition-rapide);
+}
+
+a:hover {
+  color: var(--couleur-principale-foncee);
+  text-decoration: underline;
+}
+
+a:focus {
+  outline: 2px solid var(--couleur-bordure-focus);
+  outline-offset: 2px;
+}
+
+/* === Listes === */
+ul, ol {
+  margin-bottom: var(--espacement-md);
+  padding-left: var(--espacement-lg);
+}
+
+li {
+  margin-bottom: var(--espacement-xs);
+}
+
+/* === Code === */
+code, pre {
+  font-family: var(--police-monospace);
+  font-size: 0.9em;
+}
+
+code {
+  background-color: var(--couleur-fond-secondaire);
+  padding: var(--espacement-xs) var(--espacement-sm);
+  border-radius: var(--rayon-bordure-sm);
+  color: var(--couleur-erreur);
+}
+
+pre {
+  background-color: var(--couleur-fond-secondaire);
+  padding: var(--espacement-md);
+  border-radius: var(--rayon-bordure-md);
+  overflow-x: auto;
+  margin-bottom: var(--espacement-md);
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+
+/* ========================================
+   4. CLASSES UTILITAIRES RÉUTILISABLES
+   ======================================== */
+
+/* === Espacement === */
+.m-0 { margin: 0; }
+.m-1 { margin: var(--espacement-xs); }
+.m-2 { margin: var(--espacement-sm); }
+.m-3 { margin: var(--espacement-md); }
+.m-4 { margin: var(--espacement-lg); }
+
+.p-0 { padding: 0; }
+.p-1 { padding: var(--espacement-xs); }
+.p-2 { padding: var(--espacement-sm); }
+.p-3 { padding: var(--espacement-md); }
+.p-4 { padding: var(--espacement-lg); }
+
+/* === Texte === */
+.texte-centre { text-align: center; }
+.texte-gauche { text-align: left; }
+.texte-droite { text-align: right; }
+
+.texte-gras { font-weight: 600; }
+.texte-normal { font-weight: 400; }
+.texte-leger { font-weight: 300; }
+
+.texte-petit { font-size: var(--taille-police-sm); }
+.texte-normal { font-size: var(--taille-police-base); }
+.texte-grand { font-size: var(--taille-police-lg); }
+
+/* === Couleurs === */
+.texte-principal { color: var(--couleur-texte-principal); }
+.texte-secondaire { color: var(--couleur-texte-secondaire); }
+.texte-succes { color: var(--couleur-succes); }
+.texte-erreur { color: var(--couleur-erreur); }
+.texte-avertissement { color: var(--couleur-avertissement); }
+
+/* === Affichage === */
+.cache { display: none; }
+.visible { display: block; }
+.flex { display: flex; }
+.inline-flex { display: inline-flex; }
+.grid { display: grid; }
+
+/* === Flexbox === */
+.flex-centre {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-entre {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-colonne {
+  display: flex;
+  flex-direction: column;
+}
+
+/* === Bordures === */
+.bordure { border: var(--epaisseur-bordure) solid var(--couleur-bordure); }
+.bordure-arrondie { border-radius: var(--rayon-bordure-md); }
+.bordure-ronde { border-radius: var(--rayon-bordure-rond); }
+
+/* === Ombres === */
+.ombre-petite { box-shadow: var(--ombre-sm); }
+.ombre-moyenne { box-shadow: var(--ombre-md); }
+.ombre-grande { box-shadow: var(--ombre-lg); }
+
+/* ========================================
+   5. RESPONSIVE DESIGN
+   ======================================== */
+
+/* Points de rupture pour le responsive */
+/* Mobile first : styles de base pour mobile, puis adaptations pour écrans plus grands */
+
+/* Tablette (768px et plus) */
+@media (min-width: 48rem) {
+  :root {
+    --taille-police-base: 1.125rem; /* Texte légèrement plus grand sur tablette */
+  }
+}
+
+/* Desktop (1024px et plus) */
+@media (min-width: 64rem) {
+  :root {
+    --taille-police-base: 1rem; /* Retour à la taille normale sur desktop */
+  }
+}
+
+/* Grand écran (1280px et plus) */
+@media (min-width: 80rem) {
+  .conteneur-large {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--espacement-md);
+  }
+}
+
+/* ========================================
+   6. ÉTATS ET INTERACTIONS
+   ======================================== */
+
+/* États de focus pour l'accessibilité */
+:focus {
+  outline: 2px solid var(--couleur-bordure-focus);
+  outline-offset: 2px;
+}
+
+/* Supprime l'outline par défaut mais garde l'accessibilité */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* États désactivés */
+:disabled,
+.desactive {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Transitions par défaut pour les éléments interactifs */
+button,
+input,
+select,
+textarea,
+a {
+  transition: all var(--transition-rapide);
+}
+
+/* ========================================
+   7. COMPOSANTS MODERNES
+   ======================================== */
+
+/* === Boutons modernes === */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espacement-sm);
+  padding: var(--espacement-sm) var(--espacement-lg);
+  font-size: var(--taille-police-sm);
+  font-weight: 500;
+  line-height: 1.5;
+  border: none;
+  border-radius: var(--rayon-bordure-md);
+  cursor: pointer;
+  transition: all var(--transition-rapide);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Bouton principal */
+.btn-primary {
+  background: linear-gradient(135deg, var(--couleur-principale) 0%, var(--couleur-secondaire) 100%);
+  color: white;
+  box-shadow: var(--ombre-principale);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--couleur-principale-claire) 0%, var(--couleur-secondaire-claire) 100%);
+  transform: translateY(-2px);
+  box-shadow: var(--ombre-lg);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Bouton secondaire */
+.btn-secondary {
+  background: var(--couleur-fond-tertiaire);
+  color: var(--couleur-texte-principal);
+  border: 1px solid var(--couleur-bordure);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--couleur-fond-quaternaire);
+  border-color: var(--couleur-bordure-claire);
+  transform: translateY(-1px);
+}
+
+/* Bouton fantôme */
+.btn-ghost {
+  background: transparent;
+  color: var(--couleur-texte-secondaire);
+  border: 1px solid transparent;
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background: var(--couleur-fond-tertiaire);
+  color: var(--couleur-texte-principal);
+  border-color: var(--couleur-bordure);
+}
+
+/* === Cartes modernes === */
+.card {
+  background: var(--couleur-fond-secondaire);
+  border: 1px solid var(--couleur-bordure);
+  border-radius: var(--rayon-bordure-lg);
+  box-shadow: var(--ombre-md);
+  overflow: hidden;
+  transition: all var(--transition-normale);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--ombre-lg);
+  border-color: var(--couleur-bordure-claire);
+}
+
+.card-header {
+  padding: var(--espacement-lg);
+  border-bottom: 1px solid var(--couleur-bordure);
+  background: var(--couleur-fond-tertiaire);
+}
+
+.card-body {
+  padding: var(--espacement-lg);
+}
+
+.card-footer {
+  padding: var(--espacement-lg);
+  border-top: 1px solid var(--couleur-bordure);
+  background: var(--couleur-fond-tertiaire);
+}
+
+/* === Formulaires modernes === */
+.form-group {
+  margin-bottom: var(--espacement-lg);
+}
+
+.form-label {
+  display: block;
+  margin-bottom: var(--espacement-sm);
+  font-weight: 500;
+  color: var(--couleur-texte-principal);
+  font-size: var(--taille-police-sm);
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: var(--espacement-sm) var(--espacement-md);
+  background: var(--couleur-fond-tertiaire);
+  border: 1px solid var(--couleur-bordure);
+  border-radius: var(--rayon-bordure-md);
+  color: var(--couleur-texte-principal);
+  font-size: var(--taille-police-sm);
+  transition: all var(--transition-rapide);
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--couleur-principale);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  background: var(--couleur-fond-secondaire);
+  transform: translateY(-1px);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: var(--couleur-texte-tertiaire);
+}
+
+/* === Badges et étiquettes === */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--espacement-xs) var(--espacement-sm);
+  font-size: var(--taille-police-xs);
+  font-weight: 500;
+  border-radius: var(--rayon-bordure-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.badge-primary {
+  background: rgba(99, 102, 241, 0.1);
+  color: var(--couleur-principale-claire);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+.badge-success {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--couleur-succes-claire);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.badge-error {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--couleur-erreur-claire);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.badge-warning {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--couleur-avertissement-claire);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+/* === Barres de progression modernes === */
+.progress {
+  width: 100%;
+  height: 8px;
+  background: var(--couleur-fond-tertiaire);
+  border-radius: var(--rayon-bordure-sm);
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--couleur-principale) 0%, var(--couleur-secondaire) 100%);
+  border-radius: var(--rayon-bordure-sm);
+  transition: width var(--transition-normale);
+  position: relative;
+}
+
+.progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* === Tooltips === */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--couleur-fond-principal);
+  color: var(--couleur-texte-principal);
+  padding: var(--espacement-xs) var(--espacement-sm);
+  border-radius: var(--rayon-bordure-sm);
+  font-size: var(--taille-police-xs);
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--transition-rapide);
+  box-shadow: var(--ombre-lg);
+  border: 1px solid var(--couleur-bordure);
+  z-index: var(--z-tooltip);
+}
+
+.tooltip:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ========================================
+   8. UTILITAIRES POUR L'ACCESSIBILITÉ
+   ======================================== */
+
+/* Classe pour cacher visuellement mais garder pour les lecteurs d'écran */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Préférence pour les animations réduites */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

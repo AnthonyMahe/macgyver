@@ -1,0 +1,21 @@
+{
+	"/": [
+		"src/routes/+layout.js",
+		"src/routes/+layout.js"
+	],
+	"/images": [
+		"src/routes/+layout.js"
+	],
+	"/notes": [
+		"src/routes/+layout.js"
+	],
+	"/pdf": [
+		"src/routes/+layout.js"
+	],
+	"/pomodoro": [
+		"src/routes/+layout.js"
+	],
+	"/todos": [
+		"src/routes/+layout.js"
+	]
+}

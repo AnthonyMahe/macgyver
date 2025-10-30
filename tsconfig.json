@@ -1,0 +1,62 @@
+{
+  // Configuration TypeScript pour SvelteKit + Tauri
+  // Ce fichier définit comment TypeScript compile et vérifie le code
+  
+
+  "compilerOptions": {
+    // === Options de compilation ===
+    "target": "ES2022",                    // Version JavaScript cible (moderne)
+    "module": "ESNext",                    // Système de modules (ES modules)
+    "moduleResolution": "node",            // Résolution des modules comme Node.js
+    "lib": ["ES2022", "DOM", "DOM.Iterable"], // Bibliothèques TypeScript disponibles
+    
+    // === Génération de code ===
+    "allowJs": true,                       // Permet les fichiers .js dans le projet
+    "checkJs": false,                      // Ne vérifie pas la syntaxe des .js
+    "declaration": false,                  // Ne génère pas de fichiers .d.ts
+    "sourceMap": true,                     // Génère les source maps pour le debug
+    "outDir": "./dist",                    // Dossier de sortie (si compilation directe)
+    
+    // === Vérifications strictes ===
+    "strict": true,                        // Active toutes les vérifications strictes
+    "noImplicitAny": true,                // Erreur si type 'any' implicite
+    "strictNullChecks": true,             // Vérifications strictes null/undefined
+    "strictFunctionTypes": true,          // Vérifications strictes des fonctions
+    "noImplicitReturns": true,            // Erreur si fonction sans return explicite
+    "noUnusedLocals": true,               // Avertissement pour variables non utilisées
+    "noUnusedParameters": true,           // Avertissement pour paramètres non utilisés
+    
+    // === Résolution des modules ===
+    "allowSyntheticDefaultImports": true, // Permet import par défaut depuis modules CommonJS
+    "esModuleInterop": true,              // Interopérabilité ES modules / CommonJS
+    "forceConsistentCasingInFileNames": true, // Force la casse cohérente des noms de fichiers
+    "resolveJsonModule": true,            // Permet d'importer des fichiers JSON
+    "skipLibCheck": true,                 // Ignore la vérification des .d.ts des dépendances
+    
+    // === Chemins et alias ===
+    "baseUrl": ".",                       // Répertoire de base pour la résolution
+    "paths": {
+      "$lib": ["src/lib"],                // Alias pour le dossier lib de SvelteKit
+      "$lib/*": ["src/lib/*"],            // Alias pour les sous-dossiers de lib
+      "$app/*": [".svelte-kit/runtime/app/*"] // Alias pour les modules SvelteKit
+    }
+  },
+  
+  // === Fichiers inclus ===
+  "include": [
+    "src/**/*.d.ts",                      // Définitions de types personnalisées
+    "src/**/*.ts",                        // Tous les fichiers TypeScript
+    "src/**/*.js",                        // Tous les fichiers JavaScript
+    "src/**/*.svelte",                    // Tous les composants Svelte
+    "tests/**/*.ts",                      // Fichiers de tests TypeScript
+    "tests/**/*.js"                       // Fichiers de tests JavaScript
+  ],
+  
+  // === Fichiers exclus ===
+  "exclude": [
+    "node_modules/**/*",                  // Dépendances (déjà typées)
+    "build/**/*",                         // Fichiers générés
+    "dist/**/*",                          // Fichiers de distribution
+    "src-tauri/**/*"                      // Code Rust (géré séparément)
+  ]
+}

@@ -1,0 +1,53 @@
+
+import root from '../root.svelte';
+import { set_building, set_prerendering } from '__sveltekit/environment';
+import { set_assets } from '$app/paths/internal/server';
+import { set_manifest, set_read_implementation } from '__sveltekit/server';
+import { set_private_env, set_public_env } from '../../../node_modules/@sveltejs/kit/src/runtime/shared-server.js';
+
+export const options = {
+	app_template_contains_nonce: false,
+	async: false,
+	csp: {"mode":"auto","directives":{"upgrade-insecure-requests":false,"block-all-mixed-content":false},"reportOnly":{"upgrade-insecure-requests":false,"block-all-mixed-content":false}},
+	csrf_check_origin: true,
+	csrf_trusted_origins: [],
+	embedded: false,
+	env_public_prefix: 'PUBLIC_',
+	env_private_prefix: '',
+	hash_routing: false,
+	hooks: null, // added lazily, via `get_hooks`
+	preload_strategy: "modulepreload",
+	root,
+	service_worker: false,
+	service_worker_options: undefined,
+	templates: {
+		app: ({ head, body, assets, nonce, env }) => "<!DOCTYPE html>\r\n<html lang=\"fr\" class=\"dark\">\r\n<head>\r\n  <meta charset=\"utf-8\" />\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, viewport-fit=cover\" />\r\n  \r\n  <!-- Métadonnées SEO et PWA -->\r\n  <title>MacGyver - Studio d'Outils de Productivité</title>\r\n  <meta name=\"description\" content=\"MacGyver - Suite complète d'outils de productivité : Pomodoro, Notes, TodoList, Convertisseur d'Images et Manipulateur PDF\" />\r\n  <meta name=\"keywords\" content=\"productivité, pomodoro, notes, todo, images, pdf, tauri, sveltekit\" />\r\n  <meta name=\"author\" content=\"MacGyver Team\" />\r\n  \r\n  <!-- Métadonnées Open Graph -->\r\n  <meta property=\"og:title\" content=\"MacGyver - Studio d'Outils de Productivité\" />\r\n  <meta property=\"og:description\" content=\"Suite complète d'outils de productivité avec interface moderne\" />\r\n  <meta property=\"og:type\" content=\"website\" />\r\n  \r\n  <!-- Métadonnées Twitter -->\r\n  <meta name=\"twitter:card\" content=\"summary_large_image\" />\r\n  <meta name=\"twitter:title\" content=\"MacGyver - Studio d'Outils de Productivité\" />\r\n  <meta name=\"twitter:description\" content=\"Suite complète d'outils de productivité avec interface moderne\" />\r\n  \r\n  <!-- Configuration PWA -->\r\n  <meta name=\"theme-color\" content=\"#6366f1\" />\r\n  <meta name=\"color-scheme\" content=\"dark light\" />\r\n  \r\n  <!-- Préchargement des polices système -->\r\n  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" crossorigin />\r\n  \r\n  " + head + "\r\n  \r\n  <style>\r\n    /* Styles critiques pour éviter le FOUC (Flash of Unstyled Content) */\r\n    :root {\r\n      /* Variables critiques pour le thème sombre */\r\n      --couleur-fond-principal: #0f172a;\r\n      --couleur-fond-secondaire: #1e293b;\r\n      --couleur-texte-principal: #f8fafc;\r\n      --couleur-principale: #6366f1;\r\n      --couleur-bordure: #334155;\r\n      --transition-rapide: 150ms ease-in-out;\r\n    }\r\n    \r\n    /* Reset critique */\r\n    * {\r\n      box-sizing: border-box;\r\n    }\r\n    \r\n    html {\r\n      font-size: 16px;\r\n      -webkit-font-smoothing: antialiased;\r\n      -moz-osx-font-smoothing: grayscale;\r\n      scroll-behavior: smooth;\r\n    }\r\n    \r\n    body {\r\n      margin: 0;\r\n      padding: 0;\r\n      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;\r\n      background-color: var(--couleur-fond-principal);\r\n      color: var(--couleur-texte-principal);\r\n      line-height: 1.5;\r\n      overflow-x: hidden;\r\n    }\r\n    \r\n    /* Écran de chargement élégant */\r\n    .loading-screen {\r\n      position: fixed;\r\n      top: 0;\r\n      left: 0;\r\n      right: 0;\r\n      bottom: 0;\r\n      background: linear-gradient(135deg, var(--couleur-fond-principal) 0%, var(--couleur-fond-secondaire) 100%);\r\n      display: flex;\r\n      flex-direction: column;\r\n      align-items: center;\r\n      justify-content: center;\r\n      z-index: 9999;\r\n      opacity: 1;\r\n      transition: opacity 0.5s ease-out;\r\n    }\r\n    \r\n    .loading-screen.hidden {\r\n      opacity: 0;\r\n      pointer-events: none;\r\n    }\r\n    \r\n    .loading-logo {\r\n      font-size: 3rem;\r\n      margin-bottom: 1rem;\r\n      animation: pulse 2s infinite;\r\n    }\r\n    \r\n    .loading-text {\r\n      font-size: 1.2rem;\r\n      color: var(--couleur-principale);\r\n      font-weight: 500;\r\n      margin-bottom: 2rem;\r\n    }\r\n    \r\n    .loading-spinner {\r\n      width: 40px;\r\n      height: 40px;\r\n      border: 3px solid rgba(99, 102, 241, 0.1);\r\n      border-top: 3px solid var(--couleur-principale);\r\n      border-radius: 50%;\r\n      animation: spin 1s linear infinite;\r\n    }\r\n    \r\n    @keyframes pulse {\r\n      0%, 100% { transform: scale(1); }\r\n      50% { transform: scale(1.05); }\r\n    }\r\n    \r\n    @keyframes spin {\r\n      0% { transform: rotate(0deg); }\r\n      100% { transform: rotate(360deg); }\r\n    }\r\n    \r\n    /* Styles pour l'accessibilité */\r\n    @media (prefers-reduced-motion: reduce) {\r\n      .loading-logo,\r\n      .loading-spinner {\r\n        animation: none;\r\n      }\r\n    }\r\n    \r\n    /* Optimisations pour les performances */\r\n    #svelte {\r\n      min-height: 100vh;\r\n      display: flex;\r\n      flex-direction: column;\r\n    }\r\n    \r\n    /* Styles pour les navigateurs qui ne supportent pas les variables CSS */\r\n    @supports not (color: var(--couleur-principale)) {\r\n      body {\r\n        background-color: #0f172a;\r\n        color: #f8fafc;\r\n      }\r\n      \r\n      .loading-text {\r\n        color: #6366f1;\r\n      }\r\n      \r\n      .loading-spinner {\r\n        border-color: rgba(99, 102, 241, 0.1);\r\n        border-top-color: #6366f1;\r\n      }\r\n    }\r\n  </style>\r\n</head>\r\n\r\n<body>\r\n  <!-- Écran de chargement -->\r\n  <div class=\"loading-screen\" id=\"loading-screen\">\r\n    <div class=\"loading-logo\">🔧</div>\r\n    <div class=\"loading-text\">MacGyver</div>\r\n    <div class=\"loading-spinner\"></div>\r\n  </div>\r\n  \r\n  <!-- Application principale -->\r\n  <div id=\"svelte\">" + body + "</div>\r\n  \r\n  <script>\r\n    // Masquer l'écran de chargement une fois que l'application est prête\r\n    document.addEventListener('DOMContentLoaded', function() {\r\n      setTimeout(function() {\r\n        const loadingScreen = document.getElementById('loading-screen');\r\n        if (loadingScreen) {\r\n          loadingScreen.classList.add('hidden');\r\n          setTimeout(function() {\r\n            loadingScreen.remove();\r\n          }, 500);\r\n        }\r\n      }, 1000); // Afficher le chargement pendant 1 seconde minimum\r\n    });\r\n    \r\n    // Gestion des erreurs JavaScript globales\r\n    window.addEventListener('error', function(e) {\r\n      console.error('Erreur JavaScript:', e.error);\r\n    });\r\n    \r\n    // Gestion des promesses rejetées\r\n    window.addEventListener('unhandledrejection', function(e) {\r\n      console.error('Promesse rejetée:', e.reason);\r\n    });\r\n  </script>\r\n</body>\r\n</html>",
+		error: ({ status, message }) => "<!doctype html>\n<html lang=\"en\">\n\t<head>\n\t\t<meta charset=\"utf-8\" />\n\t\t<title>" + message + "</title>\n\n\t\t<style>\n\t\t\tbody {\n\t\t\t\t--bg: white;\n\t\t\t\t--fg: #222;\n\t\t\t\t--divider: #ccc;\n\t\t\t\tbackground: var(--bg);\n\t\t\t\tcolor: var(--fg);\n\t\t\t\tfont-family:\n\t\t\t\t\tsystem-ui,\n\t\t\t\t\t-apple-system,\n\t\t\t\t\tBlinkMacSystemFont,\n\t\t\t\t\t'Segoe UI',\n\t\t\t\t\tRoboto,\n\t\t\t\t\tOxygen,\n\t\t\t\t\tUbuntu,\n\t\t\t\t\tCantarell,\n\t\t\t\t\t'Open Sans',\n\t\t\t\t\t'Helvetica Neue',\n\t\t\t\t\tsans-serif;\n\t\t\t\tdisplay: flex;\n\t\t\t\talign-items: center;\n\t\t\t\tjustify-content: center;\n\t\t\t\theight: 100vh;\n\t\t\t\tmargin: 0;\n\t\t\t}\n\n\t\t\t.error {\n\t\t\t\tdisplay: flex;\n\t\t\t\talign-items: center;\n\t\t\t\tmax-width: 32rem;\n\t\t\t\tmargin: 0 1rem;\n\t\t\t}\n\n\t\t\t.status {\n\t\t\t\tfont-weight: 200;\n\t\t\t\tfont-size: 3rem;\n\t\t\t\tline-height: 1;\n\t\t\t\tposition: relative;\n\t\t\t\ttop: -0.05rem;\n\t\t\t}\n\n\t\t\t.message {\n\t\t\t\tborder-left: 1px solid var(--divider);\n\t\t\t\tpadding: 0 0 0 1rem;\n\t\t\t\tmargin: 0 0 0 1rem;\n\t\t\t\tmin-height: 2.5rem;\n\t\t\t\tdisplay: flex;\n\t\t\t\talign-items: center;\n\t\t\t}\n\n\t\t\t.message h1 {\n\t\t\t\tfont-weight: 400;\n\t\t\t\tfont-size: 1em;\n\t\t\t\tmargin: 0;\n\t\t\t}\n\n\t\t\t@media (prefers-color-scheme: dark) {\n\t\t\t\tbody {\n\t\t\t\t\t--bg: #222;\n\t\t\t\t\t--fg: #ddd;\n\t\t\t\t\t--divider: #666;\n\t\t\t\t}\n\t\t\t}\n\t\t</style>\n\t</head>\n\t<body>\n\t\t<div class=\"error\">\n\t\t\t<span class=\"status\">" + status + "</span>\n\t\t\t<div class=\"message\">\n\t\t\t\t<h1>" + message + "</h1>\n\t\t\t</div>\n\t\t</div>\n\t</body>\n</html>\n"
+	},
+	version_hash: "a9aqrf"
+};
+
+export async function get_hooks() {
+	let handle;
+	let handleFetch;
+	let handleError;
+	let handleValidationError;
+	let init;
+	
+
+	let reroute;
+	let transport;
+	
+
+	return {
+		handle,
+		handleFetch,
+		handleError,
+		handleValidationError,
+		init,
+		reroute,
+		transport
+	};
+}
+
+export { set_assets, set_building, set_manifest, set_prerendering, set_private_env, set_public_env, set_read_implementation };

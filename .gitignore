@@ -1,0 +1,92 @@
+# Fichiers et dossiers à ignorer par Git
+# Ce fichier évite de versionner les fichiers temporaires et générés
+
+# === Dépendances Node.js ===
+node_modules/           # Modules npm installés (à réinstaller avec npm install)
+npm-debug.log*         # Logs de debug npm
+yarn-debug.log*       # Logs de debug yarn
+yarn-error.log*       # Logs d'erreur yarn
+pnpm-debug.log*       # Logs de debug pnpm
+.pnpm-debug.log*      # Logs de debug pnpm (variante)
+
+# === Build et distribution ===
+/build/               # Fichiers générés par SvelteKit
+/dist/                # Fichiers de distribution
+.output/              # Dossier de sortie générique
+.vercel/              # Configuration Vercel (si utilisé)
+.netlify/             # Configuration Netlify (si utilisé)
+
+# === Cache et fichiers temporaires ===
+.svelte-kit/          # Cache SvelteKit
+.vite/                # Cache Vite
+.cache/               # Cache générique
+*.tmp                 # Fichiers temporaires
+*.temp                # Fichiers temporaires (variante)
+
+# === Tauri spécifique ===
+src-tauri/target/     # Dossier de build Rust (très volumineux)
+src-tauri/Cargo.lock  # Lock file Cargo (peut être regénéré)
+*.exe                 # Exécutables Windows générés
+*.dmg                 # Images disque macOS
+*.deb                 # Packages Debian
+*.rpm                 # Packages Red Hat
+*.AppImage            # AppImages Linux
+
+# === Rust spécifique ===
+**/*.rs.bk            # Fichiers de sauvegarde Rust
+Cargo.lock            # Lock file Cargo global (si présent à la racine)
+
+# === Environnement et configuration ===
+.env                  # Variables d'environnement locales
+.env.local            # Variables d'environnement locales (variante)
+.env.*.local          # Variables d'environnement par environnement
+
+# === IDE et éditeurs ===
+.vscode/              # Configuration Visual Studio Code
+.idea/                # Configuration IntelliJ IDEA
+*.swp                 # Fichiers swap Vim
+*.swo                 # Fichiers swap Vim (variante)
+*~                    # Fichiers de sauvegarde temporaires
+
+# === Système d'exploitation ===
+# Windows
+Thumbs.db             # Cache des miniatures Windows
+ehthumbs.db           # Cache des miniatures Windows (variante)
+Desktop.ini           # Configuration des dossiers Windows
+
+# macOS
+.DS_Store             # Métadonnées des dossiers macOS
+.AppleDouble          # Fichiers de ressources macOS
+.LSOverride           # Configuration Launch Services macOS
+
+# Linux
+.directory            # Configuration des dossiers KDE
+
+# === Logs et debugging ===
+*.log                 # Tous les fichiers de log
+logs/                 # Dossier de logs
+debug.log             # Logs de debug spécifiques
+error.log             # Logs d'erreur spécifiques
+
+# === Tests et couverture ===
+coverage/             # Rapports de couverture de code
+.nyc_output/          # Cache NYC (outil de couverture)
+junit.xml             # Rapports de tests JUnit
+
+# === Documentation générée ===
+docs/build/           # Documentation générée
+.docusaurus/          # Cache Docusaurus (si utilisé)
+
+# === Sécurité ===
+*.pem                 # Clés privées
+*.key                 # Clés de chiffrement
+*.crt                 # Certificats
+*.p12                 # Certificats PKCS#12
+
+# === Fichiers de développement internes ===
+.kiro/                # Dossier Kiro avec specs et analyses
+*AUDIT*.md            # Rapports d'audit internes
+*RAPPORT*.md          # Rapports d'analyse internes
+*TODO*.md             # Fichiers TODO internes
+*GUIDE*.md            # Guides internes
+*PREPARATION*.md      # Fichiers de préparation internes

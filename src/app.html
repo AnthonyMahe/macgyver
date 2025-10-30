@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  
+  <!-- Métadonnées SEO et PWA -->
+  <title>MacGyver - Studio d'Outils de Productivité</title>
+  <meta name="description" content="MacGyver - Suite complète d'outils de productivité : Pomodoro, Notes, TodoList, Convertisseur d'Images et Manipulateur PDF" />
+  <meta name="keywords" content="productivité, pomodoro, notes, todo, images, pdf, tauri, sveltekit" />
+  <meta name="author" content="MacGyver Team" />
+  
+  <!-- Métadonnées Open Graph -->
+  <meta property="og:title" content="MacGyver - Studio d'Outils de Productivité" />
+  <meta property="og:description" content="Suite complète d'outils de productivité avec interface moderne" />
+  <meta property="og:type" content="website" />
+  
+  <!-- Métadonnées Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="MacGyver - Studio d'Outils de Productivité" />
+  <meta name="twitter:description" content="Suite complète d'outils de productivité avec interface moderne" />
+  
+  <!-- Configuration PWA -->
+  <meta name="theme-color" content="#6366f1" />
+  <meta name="color-scheme" content="dark light" />
+  
+  <!-- Préchargement des polices système -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+  
+  %sveltekit.head%
+  
+  <style>
+    /* Styles critiques pour éviter le FOUC (Flash of Unstyled Content) */
+    :root {
+      /* Variables critiques pour le thème sombre */
+      --couleur-fond-principal: #0f172a;
+      --couleur-fond-secondaire: #1e293b;
+      --couleur-texte-principal: #f8fafc;
+      --couleur-principale: #6366f1;
+      --couleur-bordure: #334155;
+      --transition-rapide: 150ms ease-in-out;
+    }
+    
+    /* Reset critique */
+    * {
+      box-sizing: border-box;
+    }
+    
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background-color: var(--couleur-fond-principal);
+      color: var(--couleur-texte-principal);
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+    
+    /* Écran de chargement élégant */
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, var(--couleur-fond-principal) 0%, var(--couleur-fond-secondaire) 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity 0.5s ease-out;
+    }
+    
+    .loading-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    .loading-logo {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      animation: pulse 2s infinite;
+    }
+    
+    .loading-text {
+      font-size: 1.2rem;
+      color: var(--couleur-principale);
+      font-weight: 500;
+      margin-bottom: 2rem;
+    }
+    
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(99, 102, 241, 0.1);
+      border-top: 3px solid var(--couleur-principale);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Styles pour l'accessibilité */
+    @media (prefers-reduced-motion: reduce) {
+      .loading-logo,
+      .loading-spinner {
+        animation: none;
+      }
+    }
+    
+    /* Optimisations pour les performances */
+    #svelte {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Styles pour les navigateurs qui ne supportent pas les variables CSS */
+    @supports not (color: var(--couleur-principale)) {
+      body {
+        background-color: #0f172a;
+        color: #f8fafc;
+      }
+      
+      .loading-text {
+        color: #6366f1;
+      }
+      
+      .loading-spinner {
+        border-color: rgba(99, 102, 241, 0.1);
+        border-top-color: #6366f1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Écran de chargement -->
+  <div class="loading-screen" id="loading-screen">
+    <div class="loading-logo">🔧</div>
+    <div class="loading-text">MacGyver</div>
+    <div class="loading-spinner"></div>
+  </div>
+  
+  <!-- Application principale -->
+  <div id="svelte">%sveltekit.body%</div>
+  
+  <script>
+    // Masquer l'écran de chargement une fois que l'application est prête
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(function() {
+        const loadingScreen = document.getElementById('loading-screen');
+        if (loadingScreen) {
+          loadingScreen.classList.add('hidden');
+          setTimeout(function() {
+            loadingScreen.remove();
+          }, 500);
+        }
+      }, 1000); // Afficher le chargement pendant 1 seconde minimum
+    });
+    
+    // Gestion des erreurs JavaScript globales
+    window.addEventListener('error', function(e) {
+      console.error('Erreur JavaScript:', e.error);
+    });
+    
+    // Gestion des promesses rejetées
+    window.addEventListener('unhandledrejection', function(e) {
+      console.error('Promesse rejetée:', e.reason);
+    });
+  </script>
+</body>
+</html>

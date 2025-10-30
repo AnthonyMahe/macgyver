@@ -1,0 +1,113 @@
+{
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build",
+    "devPath": "http://localhost:5173",
+    "distDir": "../build"
+  },
+  "package": {
+    "productName": "MacGyver",
+    "version": "1.0.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "shell": {
+        "all": false,
+        "open": true
+      },
+      "dialog": {
+        "all": false,
+        "open": true,
+        "save": true
+      },
+      "fs": {
+        "all": false,
+        "readFile": true,
+        "writeFile": true,
+        "readDir": true,
+        "copyFile": true,
+        "createDir": true,
+        "removeDir": true,
+        "removeFile": true,
+        "renameFile": true,
+        "exists": true
+      },
+      "protocol": {
+        "all": false,
+        "asset": true,
+        "assetScope": ["**"]
+      }
+    },
+    "bundle": {
+      "active": true,
+      "targets": ["msi", "nsis"],
+      "identifier": "com.macgyver.app",
+      "icon": [
+        "icons/icon.ico"
+      ],
+      "resources": [],
+      "externalBin": [],
+      "copyright": "Copyright © 2024 MacGyver. Tous droits réservés.",
+      "category": "Productivity",
+      "shortDescription": "Suite d'outils de productivité moderne",
+      "longDescription": "MacGyver - Suite complète d'outils de productivité avec Timer Pomodoro, Notes, TodoList, Studio d'Images et Manipulateur PDF. Interface moderne avec thème sombre.",
+      "windows": {
+        "certificateThumbprint": null,
+        "digestAlgorithm": "sha256",
+        "timestampUrl": "",
+        "tsp": false,
+        "wix": {
+          "language": "fr-FR",
+          "template": "main.wxs",
+          "fragmentPaths": [],
+          "componentGroupRefs": [],
+          "componentRefs": [],
+          "featureGroupRefs": [],
+          "featureRefs": [],
+          "mergeRefs": [],
+          "skipWebviewInstall": false,
+          "license": null,
+          "enableElevatedUpdateTask": false,
+          "bannerPath": null,
+          "dialogImagePath": null
+        },
+        "nsis": {
+          "license": null,
+          "headerImage": null,
+          "sidebarImage": null,
+          "installerIcon": null,
+          "installMode": "perMachine",
+          "languages": ["French"],
+          "displayLanguageSelector": false,
+          "template": null,
+          "customLanguageFiles": {}
+        }
+      }
+    },
+    "security": {
+      "csp": null
+    },
+    "windows": [
+      {
+        "fullscreen": false,
+        "resizable": true,
+        "title": "MacGyver - Outils de Productivité",
+        "width": 1200,
+        "height": 800,
+        "minWidth": 800,
+        "minHeight": 600,
+        "center": true,
+        "decorations": true,
+        "transparent": false,
+        "alwaysOnTop": false,
+        "skipTaskbar": false,
+        "maximized": false,
+        "visible": true,
+        "focus": true,
+        "fileDropEnabled": false,
+        "theme": "Dark"
+      }
+    ]
+  }
+}

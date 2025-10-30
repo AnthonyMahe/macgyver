@@ -1,0 +1,44 @@
+# Configuration Cargo pour optimisations spécifiques à Tauri
+# Ce fichier configure le compilateur Rust pour des builds optimaux
+
+[build]
+# Cible par défaut pour Windows
+target = "x86_64-pc-windows-msvc"
+
+[target.x86_64-pc-windows-msvc]
+# Flags de compilation pour optimiser la taille et les performances
+rustflags = [
+  # Optimisations de taille
+  "-C", "target-cpu=native",           # Optimise pour le CPU de la machine de build
+  "-C", "link-arg=-s",                 # Strip les symboles (équivalent à strip=true)
+  
+  # Optimisations de performance
+  "-C", "codegen-units=1",             # Une seule unité de génération de code
+  "-C", "panic=abort",                 # Panic = abort pour réduire la taille
+  
+  # Optimisations spécifiques Windows
+  "-C", "link-arg=/SUBSYSTEM:WINDOWS", # Application Windows (pas de console)
+  "-C", "link-arg=/ENTRY:mainCRTStartup", # Point d'entrée optimisé
+]
+
+# Configuration du linker pour de meilleures performances
+# [target.x86_64-pc-windows-msvc]
+# linker = "lld-link.exe"  # Utilise le linker LLD qui est plus rapide
+
+[profile.release-lto]
+# Profil personnalisé pour une optimisation maximale
+inherits = "release"
+lto = "fat"                    # Link Time Optimization complète
+codegen-units = 1              # Une seule unité de génération
+panic = "abort"                # Panic = abort
+strip = "symbols"              # Supprime tous les symboles
+opt-level = "z"                # Optimisation agressive pour la taille
+
+# Variables d'environnement pour le build
+[env]
+# Optimisations spécifiques à Tauri
+TAURI_PRIVATE_KEY = ""
+TAURI_KEY_PASSWORD = ""
+
+# Optimisations du compilateur
+RUSTFLAGS = "-C target-cpu=native"
