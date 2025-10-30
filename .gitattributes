@@ -1,0 +1,33 @@
+# Configuration GitHub Linguist pour optimiser les statistiques de langages
+
+# Exclure les fichiers de configuration du calcul
+*.json linguist-generated=true
+*.js linguist-generated=true
+*.ts linguist-generated=true
+*.html linguist-generated=true
+*.css linguist-detectable=false
+*.md linguist-documentation=true
+*.yml linguist-generated=true
+*.yaml linguist-generated=true
+*.toml linguist-generated=true
+*.lock linguist-generated=true
+*.ps1 linguist-generated=true
+
+# Forcer la détection des langages principaux
+*.svelte linguist-detectable=true
+*.rs linguist-detectable=true
+
+# Exclure les dossiers de build et dépendances
+node_modules/ linguist-vendored=true
+.svelte-kit/ linguist-generated=true
+build/ linguist-generated=true
+dist/ linguist-generated=true
+target/ linguist-generated=true
+
+# Marquer les fichiers de configuration comme générés
+package.json linguist-generated=true
+package-lock.json linguist-generated=true
+tsconfig.json linguist-generated=true
+vite.config.js linguist-generated=true
+svelte.config.js linguist-generated=true
+src/app.html linguist-generated=true
